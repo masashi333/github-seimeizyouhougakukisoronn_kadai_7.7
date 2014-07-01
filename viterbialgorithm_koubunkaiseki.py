@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
-states = ("kousei","husei")
-observations = ("6","4","2","6","3","6","1","3","6","5","6","6","4","4")
+states = ("接尾語","名詞:形式名詞","連体詞","助動詞","助詞:格助詞","動詞語幹:一段","助詞:格助詞","助詞:接続助詞")
+observations = ("こ","こと","この","で","と","ひ","ひと","ひとこと")
 start_prob = {"kousei":0.5,"husei":0.5}
 transit_prob = {"kousei":{"kousei":0.95,"husei":0.05},
                 "husei":{"kousei":0.4,"husei":0.6}}

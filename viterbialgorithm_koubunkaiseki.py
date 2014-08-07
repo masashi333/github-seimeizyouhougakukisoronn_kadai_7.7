@@ -1,12 +1,40 @@
 # -*- coding:utf-8 -*-
+#解析の対象とする単語
+target = ("こ","の","ひ","と","こ","と","で")
+#単語の品詞（状態）
+states = ("接尾語","名詞:普通名詞","名詞:形式名詞","連体詞","動詞語幹:一段","助詞:格助詞","助詞:接続助詞")
+#単語辞書
+word_dictionary = ("こ","こと","この","で","と","ひ","ひと","ひとこと")
+#最初のノード
+start_prob = {"文頭":0}
+#遷移コスト
+transit_prob = {"文頭":{"この":10,"こ":10},
+                "この":{"ひとこと":10,"ひと":10,"ひ":10},
+                "こ":{"の":10,"と":10},
+                "の":{"ひとこと":10,"ひと":10,"ひ":10},
+                "ひとこと":{"で":40},
+                "ひと":{"こと":10,"こ":10},
+                "ひ":{"と":10},
+                "と":{"こと":10,"で":10}}
+#単語コスト
+emission_prob = {'この' : {'連体詞':10},
+                'こ':{'名詞:普通名詞':40},
+                'の':{'助詞:接続助詞':15},
+                'ひとこと' : {'名詞:普通名詞':40},
+                'ひ' : {'名詞:普通名詞':40},
+                'と' : {'助詞:格助詞':40,'助詞:接続助詞':15},
+                'こと' : {'名詞:形式名詞':40},
+                'こ' : {'接尾語':20},
+                'で':{'動詞語幹:一段':30,'助詞:格助詞':10}}
 
-states = ("接尾語","名詞:形式名詞","連体詞","助動詞","助詞:格助詞","動詞語幹:一段","助詞:格助詞","助詞:接続助詞")
-observations = ("こ","こと","この","で","と","ひ","ひと","ひとこと")
-start_prob = {"kousei":0.5,"husei":0.5}
-transit_prob = {"kousei":{"kousei":0.95,"husei":0.05},
-                "husei":{"kousei":0.4,"husei":0.6}}
-emission_prob = {'kousei' : {'1': 1.0/6,'2':1.0/6,'3':1.0/6,'4':1.0/6,'5':1.0/6,'6':1.0/6},
-                 'husei' : {'1': 1.0/10,'2':1.0/10,'3':1.0/10,'4':1.0/10,'5':1.0/10,'6':1.0/2}}
+keitaiso_result = [["" for x in range(20)]for y in range(20)]
+keitaiso_result[0][0]= 'この'
+keitaiso_result[0][1]= 'ひとこと'
+keitaiso_result[0][2]= 'で'
+keitaiso_result[1][0]= 'この'
+keitaiso_result[1][1]= 'この'
+keitaiso_result[1][2]= 'この'
+
 
 def viterbi(observs,states,sp,tp,ep):
     """viterbi algorithm
@@ -30,10 +58,11 @@ def next_state(ob,states,T,tp,ep):
             if p>U[next_s][0]:
                 U[next_s] = [p,T[now_s][1]+[next_s]]
     return U
-
+"""
 if __name__=="__main__":
     print observations
     a,b = viterbi(observations,states,
                   start_prob,transit_prob,emission_prob)
     print b
     print a
+"""
